@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="account_bank_statement_import_csv" model="ir.ui.view">
+        <field name="name">Import Bank Statements CSV</field>
+        <field name="model">account.bank.statement.import</field>
+        <field name="inherit_id" ref="account_bank_statement_import.account_bank_statement_import_view"/>
+        <field name="arch" type="xml">
+			<field name="data_file" position="attributes">
+                    <attribute name="filename">file_name</attribute>
+            </field>
+			<xpath expr="//field[@name='data_file']" position="after">
+				<field name="file_name" invisible="1"/>
+			</xpath>
+        </field>
+    </record>
+</odoo>

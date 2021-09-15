@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+        <record id="bank_statement_view" model="ir.ui.view">
+            <field name="name">bank.statement.form</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+            
+                
+                
+                <!-- disable edition of some bank statement fields -->
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <!--<xpath expr="//field[@name='balance_start']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>-->
+                <!--<xpath expr="//field[@name='balance_end_real']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>-->
+                
+                <xpath expr="//field[@name='balance_end_real']/.." position="after">
+                    <label for="sanity_mode"/>
+                    <div>
+                        <field class="oe_inline" name="sanity_mode"/>
+                    </div>
+                </xpath>
+                
+                <xpath expr="//field[@name='line_ids']/tree" position="attributes">
+                    <!--attribute name="create">false</attribute>-->
+                    <!--<attribute name="delete">false</attribute>-->
+                    <attribute name="default_order">id</attribute>
+                    <attribute name="decoration-warning">not partner_id and not reconciled</attribute>
+                    <attribute name="decoration-danger">duplicated</attribute>
+                </xpath>
+                
+                <!-- disable edition of some bank statement line fields -->
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='date']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='ref']" position="replace">
+                    <field name="message" string="message"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='line_ids']/tree/field[@name='amount']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>-->
+                
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='amount']" position="after">
+                    <field name="reconciled_with" />
+                    <field name="marked_as_duplicated" class="oe_edit_only"/>
+                    <!-- "oe_edit_only" class doesn't work in a form subtree, see bug at https://github.com/odoo/odoo/issues/9273 -->
+                    <field name="reconciled" invisible="1"/>
+                    <field name="duplicated" invisible="1"/>
+                    <button type="object" name="display_duplicates" icon="fa fa-exclamation-triangle" attrs="{'invisible': [('duplicated', '=', False)]}"/>
+                    <button type="object" name="delete_line" icon="fa fa-times" attrs="{'invisible': [('duplicated', '=', False)]}"/>
+                    <field name="reconciliation_suggestions" invisible="1"/>
+                   <!--  <button type="object" name="display_reconciliation_suggestions" icon="gtk-info" attrs="{'invisible': [('reconciliation_suggestions', '=', [])]}"/> -->
+                </xpath>
+                
+            </field>
+        </record>
+        
+        
+    </data>
+</odoo>

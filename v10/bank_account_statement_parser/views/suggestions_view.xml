@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- <data> -->
+	
+		<record id="suggestions_view" model="ir.ui.view">
+			<field name="name">suggestions.view</field>
+			<field name="model">account.move.displayer</field>
+			<field name="arch" type="xml">
+				<form string="Reconciliation Suggestions">
+					<field name="account_moves">
+						<tree decoration-info="state == 'draft'" string="Journal Entries">
+							<!-- colors="red:statement_line_id != False" -->
+							<field name="date"/>
+							<field name="name"/>
+							<field name="partner_id"/>
+							<field name="ref"/>
+							<field name="journal_id"/>
+							<field name="amount"/>
+							<field name="state"/>
+							<!-- <field name="statement_line_id" invisible="1"/> -->
+							<button type="object" name="open_statement" icon="gtk-file" />
+							<!-- attrs="{'invisible': [('statement_line_id', '=', False)]}" -->
+						</tree>
+					</field>
+				</form>
+			</field>
+		</record>
+		
+		<act_window id="display_bank_statement"
+			name="Bank Statement Display"
+			view_type="form"
+			res_model="account.bank.statement"/>
+
+		
+	<!-- </data> -->
+</odoo>
